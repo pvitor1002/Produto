@@ -16,10 +16,10 @@ Feature: Sistema de inserção, remoção, busca e update de produtos
     Then Status "<status>"
   
   Examples: 
-      | nome   | id | valor |  status       |
-      | Carne  |  4 | 20.50 |  Inserido     |
-      | Feijão |  1 | 10.00 |ID já existente|
-      | Yakuti | -1 | 7.00  |  ID invalido  |     
+      | nome   | id | valor |  status          |
+      | Carne  |  4 | 20.50 |Sucesso ao inserir|
+      | Feijão |  1 | 10.00 |Falha ao inserir  |
+      | Yakuti | -1 | 7.00  |Falha ao inserir  |     
 
   Scenario Outline: Remocao de produto
     Given Usuario deseja remover o produto <id>
@@ -28,9 +28,9 @@ Feature: Sistema de inserção, remoção, busca e update de produtos
 
     Examples: 
       | id | status                |
-      | 1  | Removido com sucesso  |
-      | -1 | ID invalido           |
-      | 5  | Produto nao encontrado|
+      | 1  | Sucesso ao deletar    |
+      | -1 | Falha ao deletar      |
+      | 5  | Falha ao deletar      |
       
   Scenario Outline: busca de produto
     Given Usuario deseja buscar o produto <id>
@@ -39,9 +39,9 @@ Feature: Sistema de inserção, remoção, busca e update de produtos
 
     Examples: 
       | id |        status         |
-      | 1  | Produto encontrado    |           
-      | -1 | ID invalido           |
-      | 5  | Produto nao encontrado|
+      | 1  | Sucesso ao encontrar  |           
+      | -1 | Falha ao encontrar    |
+      | 5  | Falha ao encontrar    |
       
   Scenario Outline: Atualizar produto
     Given Usuario deseja atualizar o produto <id> com nome "<nome>" e valor <valor>
@@ -50,7 +50,7 @@ Feature: Sistema de inserção, remoção, busca e update de produtos
 
     Examples: 
       | id | nome  |  valor |        status         |
-      | 1  |Alface |  6.00  | Produto atualizado    |
+      | 1  |Alface |  6.00  | Sucesso ao atualizar  |
       | 1  |Alface | -6.00  | Falha ao atualizar    |           
-      | -1 |Alface |  4.00  | ID invalido           |
-      | 5  |Alface |  6.00  | Produto nao encontrado|
+      | -1 |Alface |  4.00  | Falha ao atualizar    |
+      | 5  |Alface |  6.00  | Falha ao atualizar    |
