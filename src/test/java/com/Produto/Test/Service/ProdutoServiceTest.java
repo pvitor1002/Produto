@@ -92,6 +92,15 @@ public class ProdutoServiceTest {
 	}
 	
 	@Test
+	public void ProdutoServiceAtualizarProdutoIdExistenteTest() {
+		produto.setId(1);
+		produto.setNome("Teste");
+		produto.setValor(10.00);
+		when(prodserv.buscaProduto(1)).thenReturn("Sucesso ao encontrar");
+		assertEquals("Falha ao atualizar", prodserv.atualizarProduto(produto));
+	}
+	
+	@Test
 	public void ProdutoServiceAtualizarProdutoValorInvalidoTest() {
 		produto.setId(3);
 		produto.setNome("Teste");
@@ -110,5 +119,11 @@ public class ProdutoServiceTest {
 	@Test
 	public void ProdutoServiceDeletarProdutoIdInvalidoTest() {
 		assertEquals("Falha ao deletar", prodserv.deletarProduto(-1));
+	}
+	
+	@Test
+	public void ProdutoServiceDeletarProdutoIdExistenteTest() {
+		when(prodserv.buscaProduto(1)).thenReturn("Sucesso ao encontrar");
+		assertEquals("Falha ao deletar", prodserv.deletarProduto(1));
 	}
 }
