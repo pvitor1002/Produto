@@ -25,5 +25,10 @@ public class ProdutoTest {
 		produto.setValor(12.50);
 		assertEquals(12.50, produto.getValor(), 0.001);
 	}
+	@Test
+	public void ProdutoGetSetIdTest() {
+		produto.setId(1);
+		assertEquals(1, produto.getId());
+	}
 
 }
