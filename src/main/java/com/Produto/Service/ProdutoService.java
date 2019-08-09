@@ -10,14 +10,6 @@ public class ProdutoService {
 	@InjectMocks
 	private ProdutoRepository prodrep = new ProdutoRepository();
 	
-	public void Connect() {
-		prodrep.Connect("127.0.0.1");
-	}
-	
-	public void Close() {
-		prodrep.close();
-	}
-	
 	public String buscaProduto(int id) {
 		String resposta = "Falha ao encontrar";
 		if(id >= 0)

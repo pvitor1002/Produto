@@ -21,32 +21,20 @@ public class ProdutoController {
 	
 	@GetMapping("produto/{id}")
 	public String buscaProduto(@PathVariable("id") final int id) {
-		prodserv.Connect();
-		String resposta = prodserv.buscaProduto(id);
-		prodserv.Close();
-		return resposta;
+		return prodserv.buscaProduto(id);
 	}
 	
 	@PostMapping("/produto")
 	public String criarProduto(@RequestBody Produto produto) {
-		prodserv.Connect();
-		String resposta = prodserv.adicionarProduto(produto);
-		prodserv.Close();
-		return resposta;
+		return prodserv.adicionarProduto(produto);
 	}
 	@PutMapping("/produto")
 	public String atualizarProduto(@RequestBody Produto produto) {
-		prodserv.Connect();
-		String resposta = prodserv.atualizarProduto(produto);
-		prodserv.Close();
-		return resposta;
+		return prodserv.atualizarProduto(produto);
 	}
 	@DeleteMapping("produto/{id}")
 	public String deletarProduto(@PathVariable("id") final int id) {
-		prodserv.Connect();
-		String resultado = prodserv.deletarProduto(id);
-		prodserv.Close();
-		return resultado;
+		return prodserv.deletarProduto(id);
 	}
 	
 }

@@ -16,7 +16,7 @@ public class ProdutoRepository {
 	private Cluster cluster;
 	private Session session;
 	
-	public void Connect(final String node) {
+	public void connect(final String node) {
 		cluster = Cluster.builder().withoutJMXReporting().addContactPoint(node).build();
 		session = cluster.connect();
 	}
@@ -27,9 +27,11 @@ public class ProdutoRepository {
 	}
 	
 	public String buscar(int id) {
+		connect("127.0.0.1");
 		Produto produto = null;
 		ResultSet result = session.execute("Select * from StorageControl.produtos where id = " + id + ";");
 		List<Row> list = result.all();
+		close();
 		if(list.size() == 0)
 			return "Falha ao encontrar";
 		else {
@@ -40,38 +42,48 @@ public class ProdutoRepository {
 			if(produto != null) {
 				return produto.toString();
 			}
+			close();
 			return "Falha ao encontrar";
 		}
 	}
 	
 	public String adicionar(Produto produto) {
+		connect("127.0.0.1");
 		try {
 		Insert insert = QueryBuilder.insertInto("StorageControl","produtos")
 				.value("id", produto.getId())
 				.value("nome", produto.getNome())
 				.value("valor", produto.getValor());
 		session.execute(insert);
+		close();
 		return "Sucesso ao criar";
 		} catch (Exception e) {
+			close();
 			return "Falha ao criar";
 		}
 	}
 
-	public String atualizar(Produto produto) {;
+	public String atualizar(Produto produto) {
+		connect("127.0.0.1");
 		try{
 			session.execute("UPDATE StorageControl.produtos SET nome = \'" + produto.getNome() + "\', valor = " + produto.getValor() + " WHERE id = " + produto.getId() + ";");
+			close();
 			return "Sucesso ao atualizar";
 		} catch(Exception e) {
+			close();
 			return "Falha ao atualizar";
 		}
 	}
 
 	public String deletar(int id) {
+		connect("127.0.0.1");
 		try {
 			Where delete = QueryBuilder.delete().from("StorageControl", "produtos").where(QueryBuilder.eq("id", id));
 			session.execute(delete);
+			close();
 			return "Sucesso ao deletar";
 		} catch(Exception e) {
+			close();
 			return "Falha ao deletar";
 		}
 	}
