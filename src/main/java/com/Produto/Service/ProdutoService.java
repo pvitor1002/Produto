@@ -19,7 +19,7 @@ public class ProdutoService {
 
 	public String adicionarProduto(Produto produto) {
 		String resposta = "Falha ao criar";
-		if(produto != null && produto.getId() >= 0 && produto.getValor() >= 0.00 && buscaProduto(produto.getId()).equals("Falha ao encontrar")) {
+		if(produto != null && produto.getNome() != null && produto.getId() >= 0 && produto.getValor() >= 0.00 && buscaProduto(produto.getId()).equals("Falha ao encontrar")) {
 			resposta = prodrep.adicionar(produto);
 		}
 		return resposta;

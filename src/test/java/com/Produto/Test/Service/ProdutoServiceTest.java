@@ -43,6 +43,7 @@ public class ProdutoServiceTest {
 		produto.setId(-1);
 		produto.setNome("Teste");
 		produto.setValor(10.00);
+		when(prodrep.adicionar(produto)).thenReturn("Sucesso ao criar");
 		assertEquals("Falha ao criar", prodserv.adicionarProduto(produto));
 	}
 	
@@ -52,6 +53,17 @@ public class ProdutoServiceTest {
 		produto.setNome("Teste");
 		produto.setValor(10.00);
 		when(prodserv.buscaProduto(1)).thenReturn("Sucesso ao encontrar");
+		when(prodrep.adicionar(produto)).thenReturn("Sucesso ao criar");
+		assertEquals("Falha ao criar", prodserv.adicionarProduto(produto));
+	}
+	
+	@Test
+	public void ProdutoServiceAdicionarProdutoNomeNuloTest() {
+		produto.setId(1);
+		produto.setNome(null);
+		produto.setValor(10.00);
+		when(prodserv.buscaProduto(1)).thenReturn("Falha ao encontrar");
+		when(prodrep.adicionar(produto)).thenReturn("Sucesso ao criar");
 		assertEquals("Falha ao criar", prodserv.adicionarProduto(produto));
 	}
 	
@@ -61,6 +73,7 @@ public class ProdutoServiceTest {
 		produto.setNome("Teste");
 		produto.setValor(-10.00);
 		when(prodserv.buscaProduto(1)).thenReturn("Falha ao encontrar");
+		when(prodrep.adicionar(produto)).thenReturn("Sucesso ao criar");
 		assertEquals("Falha ao criar", prodserv.adicionarProduto(produto));
 	}
 	
@@ -68,11 +81,13 @@ public class ProdutoServiceTest {
 	public void ProdutoServiceAdicionarProdutoNullTest() {
 		Produto produto =  null;
 		when(prodserv.buscaProduto(1)).thenReturn("Falha ao encontrar");
+		when(prodrep.adicionar(produto)).thenReturn("Sucesso ao criar");
 		assertEquals("Falha ao criar", prodserv.adicionarProduto(produto));
 	}
 	
 	@Test
 	public void ProdutoServiceBuscarProdutoIdInvalidoTest() {
+		when(prodrep.buscar(-1)).thenReturn("Sucesso ao encontrar");
 		assertEquals("Falha ao encontrar", prodserv.buscaProduto(-1));
 	}
 	
@@ -88,6 +103,7 @@ public class ProdutoServiceTest {
 		produto.setId(-1);
 		produto.setNome("Teste");
 		produto.setValor(10.00);
+		when(prodrep.atualizar(produto)).thenReturn("Sucesso ao atualizar");
 		assertEquals("Falha ao atualizar", prodserv.atualizarProduto(produto));
 	}
 	
@@ -96,8 +112,10 @@ public class ProdutoServiceTest {
 		produto.setId(1);
 		produto.setNome("Teste");
 		produto.setValor(10.00);
-		when(prodserv.buscaProduto(1)).thenReturn("Sucesso ao encontrar");
+	    when(prodrep.atualizar(produto)).thenReturn("Falha ao atualizar");
+		when(prodserv.buscaProduto(produto.getId())).thenReturn("Sucesso ao encontrar");
 		assertEquals("Falha ao atualizar", prodserv.atualizarProduto(produto));
+		verify(prodserv).buscaProduto(produto.getId());
 	}
 	
 	@Test
@@ -105,6 +123,7 @@ public class ProdutoServiceTest {
 		produto.setId(3);
 		produto.setNome("Teste");
 		produto.setValor(-10.00);
+		when(prodrep.atualizar(produto)).thenReturn("Sucesso ao atualizar");
 		when(prodserv.buscaProduto(3)).thenReturn("Sucesso ao encontrar");
 		assertEquals("Falha ao atualizar", prodserv.atualizarProduto(produto));
 	}
@@ -112,6 +131,7 @@ public class ProdutoServiceTest {
 	@Test
 	public void ProdutoServiceAtualizarProdutoNullTest() {
 		Produto produto = null;
+		when(prodrep.atualizar(produto)).thenReturn("Sucesso ao atualizar");
 		when(prodserv.buscaProduto(3)).thenReturn("Sucesso ao encontrar");
 		assertEquals("Falha ao atualizar", prodserv.atualizarProduto(produto));
 	}
