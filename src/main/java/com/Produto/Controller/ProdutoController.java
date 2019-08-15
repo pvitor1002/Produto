@@ -39,8 +39,8 @@ public class ProdutoController {
 		return prodserv.atualizarProduto(produto);
 	}
 	@DeleteMapping("produto/{id}")
-	public String deletarProduto(@PathVariable("id") final String id) {
+	public void deletarProduto(@PathVariable("id") final String id) {
+		prodserv.produto.setId(Integer.parseInt(id));
 		kafkaTemplate.send("Delete_Request", id);
-		return prodserv.deletarProduto(Integer.parseInt(id));
 	}
 }
