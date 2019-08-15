@@ -1,6 +1,7 @@
 package com.Produto.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +24,14 @@ public class ProdutoController {
 	private KafkaTemplate<String, String> kafkaTemplate;
 	
 	@GetMapping("produto/{id}")
-	public String buscaProduto(@PathVariable("id") final int id) {
-		return prodserv.buscaProduto(id);
+	public String buscaProduto(@PathVariable("id") final String id) {
+		System.out.println("Deu certo");
+		return prodserv.buscaProduto(Integer.parseInt(id));
 	}
 	
 	@PostMapping("/produto")
 	public String criarProduto(@RequestBody Produto produto) {
+		kafkaTemplate.send("Insert_Request", String.valueOf(produto.getId()));
 		return prodserv.adicionarProduto(produto);
 	}
 	@PutMapping("/produto")
@@ -37,7 +40,7 @@ public class ProdutoController {
 	}
 	@DeleteMapping("produto/{id}")
 	public String deletarProduto(@PathVariable("id") final String id) {
-		kafkaTemplate.send("Delete", id);
+		kafkaTemplate.send("Delete_Request", id);
 		return prodserv.deletarProduto(Integer.parseInt(id));
 	}
 }

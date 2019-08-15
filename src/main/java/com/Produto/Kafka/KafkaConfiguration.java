@@ -43,22 +43,22 @@ public class KafkaConfiguration {
     }
     
     @Bean
-	public ConsumerFactory<String, Integer> consumerFactory(){
+	public ConsumerFactory<String, String> consumerFactory(){
 		
 		HashMap<String, Object> config = new HashMap<>();
 		
 		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
+		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		
-		return new DefaultKafkaConsumerFactory<String, Integer>(config);
+		return new DefaultKafkaConsumerFactory<String, String>(config);
 	}
 	
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, Integer> kafkaListenerContainerFactory(){
+	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(){
 		
-		ConcurrentKafkaListenerContainerFactory<String, Integer> factory = new ConcurrentKafkaListenerContainerFactory<String, Integer>();
+		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
 		
 		factory.setConsumerFactory(consumerFactory());
 		
