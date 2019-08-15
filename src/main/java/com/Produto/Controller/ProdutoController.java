@@ -30,7 +30,6 @@ public class ProdutoController {
 	
 	@PostMapping("/produto")
 	public String criarProduto(@RequestBody Produto produto) {
-		kafkaTemplate.send("Insert_Request", String.valueOf(produto.getId()));
 		return prodserv.adicionarProduto(produto);
 	}
 	@PutMapping("/produto")
