@@ -25,7 +25,6 @@ public class ProdutoController {
 	
 	@GetMapping("produto/{id}")
 	public String buscaProduto(@PathVariable("id") final String id) {
-		System.out.println("Deu certo");
 		return prodserv.buscaProduto(Integer.parseInt(id));
 	}
 	
@@ -39,8 +38,8 @@ public class ProdutoController {
 		return prodserv.atualizarProduto(produto);
 	}
 	@DeleteMapping("produto/{id}")
-	public void deletarProduto(@PathVariable("id") final String id) {
-		prodserv.produto.setId(Integer.parseInt(id));
+	public String deletarProduto(@PathVariable("id") final String id) {
 		kafkaTemplate.send("Delete_Request", id);
+		return prodserv.deletarProduto(Integer.parseInt(id));
 	}
 }

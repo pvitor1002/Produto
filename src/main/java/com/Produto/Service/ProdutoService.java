@@ -11,7 +11,7 @@ import com.Produto.Repository.ProdutoRepository;
 
 public class ProdutoService {
 
-	public Produto produto = new Produto();
+	private String insert = null;
 	
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
@@ -43,8 +43,14 @@ public class ProdutoService {
 
 	public String deletarProduto(int id) {
 		String resposta = "Falha ao deletar";
-		if(id >= 0 && !buscaProduto(id).equals("Falha ao encontrar"))
-			resposta = prodrep.deletar(id);
+		while(this.insert == null) {
+			Thread.yield();
+		}
+		if(!(this.insert == "Falha ao deletar")) {
+			if(id >= 0 && !buscaProduto(id).equals("Falha ao encontrar"))
+				resposta = prodrep.deletar(id);
+		}
+		this.insert = null;
 		return resposta;
 	}
 	
@@ -55,14 +61,14 @@ public class ProdutoService {
 	
 	@KafkaListener(topics = "Delete_Response", groupId = "group_id")
 	public void Delete(String message) {
-		if(!message.equals("Falha ao encontrar")) {
+		if(message.equals("Falha ao encontrar")) {
+			this.insert = "deletar";
+		} else {
 			JSONObject jo = new JSONObject(message);
 			if(jo.getInt("quantidade") == 0)
-				System.out.println(deletarProduto(jo.getInt("id")));
+				this.insert = "deletar";
 			else
-				System.out.println("Falha ao deletar");
-		} else
-			System.out.println(deletarProduto(produto.getId()));
-		produto.setId(0);
+				this.insert = "Falha ao deletar";
+		}
 	}
 }
